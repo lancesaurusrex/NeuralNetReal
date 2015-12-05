@@ -7,3 +7,9 @@ O:\lance.wessale\Source\Repos\SPWebService\ConsoleApplication1\obj\Debug\Console
 O:\lance.wessale\Documents\Visual Studio 2015\Projects\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config
 O:\lance.wessale\Documents\Visual Studio 2015\Projects\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
 O:\lance.wessale\Documents\Visual Studio 2015\Projects\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb
+C:\Users\Lance\Source\Repos\NeuralNetReal\bin\Debug\ConsoleApplication1.exe.config
+C:\Users\Lance\Source\Repos\NeuralNetReal\obj\Debug\ConsoleApplication1.exe
+C:\Users\Lance\Source\Repos\NeuralNetReal\obj\Debug\ConsoleApplication1.pdb
+C:\Users\Lance\Source\Repos\NeuralNetReal\bin\Debug\ConsoleApplication1.exe
+C:\Users\Lance\Source\Repos\NeuralNetReal\bin\Debug\ConsoleApplication1.pdb
+C:\Users\Lance\Source\Repos\NeuralNetReal\obj\Debug\NeuralNetwork.csprojResolveAssemblyReference.cache

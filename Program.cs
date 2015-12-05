@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -9,35 +10,134 @@ namespace NeuralNetwork
     {
         static void Main(string[] args)
         {
-            var network = new NeuralNetwork(4, 4, 1);   //input,hidden,output
+            IOStuff a = new IOStuff();
+            //string path = Directory.GetCurrentDirectory();
+            string fileNameXInput = "C:\\Users\\Lance\\Source\\Repos\\NeuralNetReal\\TextFile1.txt";
+            FileInfo fileInfo = new FileInfo(fileNameXInput);
+            double[] trainXInput = a.readCSVFile(fileNameXInput);
 
-            int trainingIterations = 10000;     //# of times to train neural network
+            string fileNameXTest1 = "C:\\Users\\Lance\\Source\\Repos\\NeuralNetReal\\Test1.txt";
+            fileInfo = new FileInfo(fileNameXTest1);
+            double[] test1X = a.readCSVFile(fileInfo.FullName);
+
+            string fileNameXTest4 = "C:\\Users\\Lance\\Source\\Repos\\NeuralNetReal\\Test4.txt";
+            fileInfo = new FileInfo(fileNameXTest4);
+            double[] test4O = a.readCSVFile(fileInfo.FullName);
+
+            string fileNameXTest2 = "C:\\Users\\Lance\\Source\\Repos\\NeuralNetReal\\Test2.txt";
+            fileInfo = new FileInfo(fileNameXTest2);
+            double[] test2X = a.readCSVFile(fileInfo.FullName);
+
+            string fileNameOTest6 = "C:\\Users\\Lance\\Source\\Repos\\NeuralNetReal\\Test6.txt";
+            fileInfo = new FileInfo(fileNameOTest6);
+            double[] test6O = a.readCSVFile(fileInfo.FullName);
+
+            string ResultX1 = "C:\\Users\\Lance\\Source\\Repos\\NeuralNetReal\\ResultX.txt";
+            fileInfo = new FileInfo(ResultX1);
+            double[] ResultX = a.readCSVFile(fileInfo.FullName);
+
+            string ResultO1 = "C:\\Users\\Lance\\Source\\Repos\\NeuralNetReal\\ResultO.txt";
+            fileInfo = new FileInfo(ResultO1);
+            double[] ResultO = a.readCSVFile(fileInfo.FullName);
+
+            var network = new NeuralNetwork(64, 64, 1);   //input,hidden,output
+
+            int trainingIterations = 50000;     //# of times to train neural network
 
             Console.WriteLine("Training Network...");
             for (int i = 0; i < trainingIterations; i++)
             {
-                network.Train(0,0,0,0);     //send signal
-                network.BackPropagate(1);   //calculate weights
+                //network.Train(trainXInput);     //send signal (0,0,0,0)
+                //network.BackPropagate(1);   //calculate weights (1)
+                if (i % 10000 == 0) {
+                    float result = (float)i / trainingIterations;
+                    Console.Write(result + "...");
+                }
 
-                network.Train(1,1,1,1);
+                network.Train(trainXInput);
+                network.BackPropagate(1);
+
+                network.Train(test4O);
                 network.BackPropagate(0);
             }
-
+            Console.WriteLine();
             double error;
             double output;
 
-            output = network.Compute(0, 0, 0, 0)[0];
+            output = network.Compute(trainXInput)[0];
             error = network.CalculateError(1);
-            Console.WriteLine("0 = 1 = " + output.ToString("F5") + ", Error = " + error.ToString("F5"));
+            Console.WriteLine("X = 1 = " + output.ToString("F5") + ", Error = " + error.ToString("F5"));
 
-            output = network.Compute(1, 1, 1, 1)[0];
+            output = network.Compute(test1X)[0];
+            error = network.CalculateError(1);
+            Console.WriteLine("TestX = 1 = " + output.ToString("F5") + ", Error = " + error.ToString("F5"));
+
+            output = network.Compute(test4O)[0];
             error = network.CalculateError(0);
-            Console.WriteLine("1 = 0 = " + output.ToString("F5") + ", Error = " + error.ToString("F5"));
+            Console.WriteLine("Test4O (O) = " + output.ToString("F5") + ", Error = " + error.ToString("F5"));
 
-            output = network.Compute(0, 0, 0, 1)[0];
+            output = network.Compute(test2X)[0];
+            error = network.CalculateError(1);
+            Console.WriteLine("Test2X = 1 = " + output.ToString("F5") + ", Error = " + error.ToString("F5"));
+
+            output = network.Compute(test6O)[0];
             error = network.CalculateError(0);
-            Console.WriteLine("1 = 0 = " + output.ToString("F5") + ", Error = " + error.ToString("F5"));
+            Console.WriteLine("Test6O = 0 = " + output.ToString("F5") + ", Error = " + error.ToString("F5"));
 
+            output = network.Compute(ResultX)[0];
+            error = network.CalculateError(1);
+            Console.WriteLine("ResultX = 1 = " + output.ToString("F5") + ", Error = " + error.ToString("F5"));
+
+            output = network.Compute(ResultO)[0];
+            int count = 0;
+            foreach (double ab in ResultO) {
+                ++count;
+                if (count % 8 == 0) {
+                    Console.Write(ab);
+                    Console.WriteLine('\n');
+                }
+                else { Console.Write(ab); }
+                
+            }
+            error = network.CalculateError(0);
+            Console.WriteLine("ResultO = 0 = " + output.ToString("F5") + ", Error = " + error.ToString("F5"));
+            //output = network.Compute(1, 1, 1, 1)[0];
+            //error = network.CalculateError(0);
+            //Console.WriteLine("1 = 0 = " + output.ToString("F5") + ", Error = " + error.ToString("F5"));
+
+            //output = network.Compute(0, 0, 0, 1)[0];
+            //error = network.CalculateError(0);
+            //Console.WriteLine("1 = 0 = " + output.ToString("F5") + ", Error = " + error.ToString("F5"));
+
+        }
+    }
+
+    public class IOStuff {
+
+        public double[] readCSVFile(string fileName) {
+            List<double> tempOut = new List<double>();
+            double[] output = new Double[64];
+            string temp = string.Empty;
+            const Int32 BufferSize = 128;
+            using (var fileStream = File.OpenRead(fileName)) {  //DO i call close or does using do that?
+                using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize)) {
+                    String line;
+                    
+                    while ((line = streamReader.ReadLine()) != null) {
+                        foreach (char ch in line) {
+                            if (char.IsNumber(ch)) { double a = char.GetNumericValue(ch); tempOut.Add(a); }
+                        }
+                    }                   
+                }
+            }
+
+            if (tempOut.Count == 64) {
+                output = tempOut.ToArray();
+            }
+            else {
+                throw new NullReferenceException("tempOut should only have 64 inputs");
+            }
+            return output;
         }
     }
 
@@ -195,4 +295,4 @@ namespace NeuralNetwork
             Weight = NeuralNetwork.NextRandom();
         }
     }
-}
+}
