@@ -53,7 +53,6 @@
   <ItemGroup>
     <Content Include="ResultO.txt" />
     <Content Include="ResultX.txt" />
-    <Content Include="Test0.txt" />
     <Content Include="Test1.txt" />
     <Content Include="Test2.txt" />
     <Content Include="Test3.txt" />
@@ -62,6 +61,13 @@
     <Content Include="Test6.txt" />
     <Content Include="Test7.txt" />
     <Content Include="TextFile1.txt" />
+    <Content Include="TrainO1.txt" />
+    <Content Include="TrainO2.txt" />
+    <Content Include="TrainO3.txt" />
+    <Content Include="TrainO4.txt" />
+    <Content Include="TrainX1.txt" />
+    <Content Include="TrainX2.txt" />
+    <Content Include="TrainX3.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
